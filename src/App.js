@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useQuery, gql } from '@apollo/client';
 
-function App() {
+const GET_LOCATIONS = gql`
+  query GetLocations {
+    country(code: "BR") {
+      name
+      native
+      capital
+      emoji
+      currency
+      languages {
+        code
+        name
+      }
+    }
+  }
+`;
+
+const DisplayLocations = () => {
+  const { loading, error, data } = useQuery(GET_LOCATIONS);
+  const {name, currency, capital, native, emoji} = data.country;
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div key={name}>
+      <h3>{name}</h3>
+      <br />
+      <b>About this location:</b>
+      <ol>
+        <li>Capital is known as {capital}</li>
+        <li>Its symbol is {emoji}</li>
+        <li>Its native is {native}</li>
+        <li>Currency: {currency}</li> 
+        {data.country.languages.map( (lang) => (
+        <ol>
+          <li>Languages: {lang.name}</li>
+          <li>Languages Code: {lang.code}</li>
+        </ol>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+const App = () => {
+  return (
+    <div>
+      <h2>Let's Know Our Countries 🚀</h2>
+      <DisplayLocations />
     </div>
   );
 }
