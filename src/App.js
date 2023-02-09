@@ -25,7 +25,7 @@ const DisplayLocations = () => {
 
   return (
     <div key={name}>
-      <h3>{name}</h3>
+      <h3>Country: {name}</h3>
       <br />
       <b>About this location:</b>
       <ol>
