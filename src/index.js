@@ -9,26 +9,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-client
-  .query({
-    query: gql`
-      query GetLocations {
-        country(code: "BR") {
-          name
-          native
-          capital
-          emoji
-          currency
-          languages {
-            code
-            name
-          }
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

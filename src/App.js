@@ -18,7 +18,7 @@ const GET_LOCATIONS = gql`
 
 const DisplayLocations = () => {
   const { loading, error, data } = useQuery(GET_LOCATIONS);
-  const {name, currency, capital, native, emoji} = data.country;
+  const {name, currency, capital, native, emoji, languages} = data?.country || {};
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -33,11 +33,11 @@ const DisplayLocations = () => {
         <li>Its symbol is {emoji}</li>
         <li>Its native is {native}</li>
         <li>Currency: {currency}</li> 
-        {data.country.languages.map( (lang) => (
-        <ol>
-          <li>Languages: {lang.name}</li>
-          <li>Languages Code: {lang.code}</li>
-        </ol>
+        {languages?.map((lang) => (
+          <ol key={lang.code}>
+            <li>Language: {lang.name}</li>
+            <li>Code: {lang.code}</li>
+          </ol>
         ))}
       </ol>
     </div>
